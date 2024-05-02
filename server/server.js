@@ -17,7 +17,6 @@ app.get('/api/moles', async (req, res) => {
     const data = await fs.readFile(path.join(__dirname, 'data.json'), 'utf8');
     res.setHeader('Content-Type', 'application/json');
     res.send(data);
-    console.log('hi');
   } catch (err) {
     console.error(err);
     res.status(500).send('Error reading mole configuration');

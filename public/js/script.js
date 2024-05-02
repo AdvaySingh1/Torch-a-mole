@@ -33,14 +33,11 @@ function floatsToCssColor(data) {
 async function showRandomMole() {
     clearMoles();
     const moles = await getMolesData();
-    const secondMole = moles[1];
     // Add a check to ensure that moles data is not undefined and has the correct structure
     if (!moles || !moles.length) {
       console.error('Moles data is not in the expected format or is missing.');
       return;
     }
-     // console.log(moles.length); // 3 for each object
-  
 
     // Set the background color of the hole to the mole's color
     let usedHoles = new Set();
@@ -68,13 +65,34 @@ async function showRandomMole() {
       return holeIndex;
     }
 
+    // define prob of one in 3 for showing mole
     function showMole(){
         let rand_number = Math. floor(Math. random() * (10 + 1)); //three in 10 prob
-        // console.log(rand_number);
         if (rand_number <=9){
             return true;
         }
         return false;
+    }
+    // delplay and clear round functions
+    function displayRound(round) {
+      const roundDisplay = document.createElement('div');
+      roundDisplay.id = 'round-display';
+      roundDisplay.textContent = `Round: ${round}`;
+      roundDisplay.style.position = 'fixed';
+      roundDisplay.style.top = '50%';
+      roundDisplay.style.left = '50%';
+      roundDisplay.style.transform = 'translate(-50%, -50%)';
+      roundDisplay.style.fontSize = '2em';
+      roundDisplay.style.zIndex = '1000'; // Ensure it's above other elements
+      document.body.appendChild(roundDisplay);
+    }
+    
+    // Function to remove the round display from the web page body
+    function removeRoundDisplay() {
+      const roundDisplay = document.getElementById('round-display');
+      if (roundDisplay) {
+        roundDisplay.parentNode.removeChild(roundDisplay);
+      }
     }
 
     let colorArray = [];
@@ -104,12 +122,17 @@ async function showRandomMole() {
           var newHole = hole.cloneNode(true);
           hole.parentNode.replaceChild(newHole, hole);
         });
-        console.log(`Round number: ${++round}.`);
-        update_perams();
-        //setTimeout(() => {
-          // Call the function to start the next round of the game
-         // showRandomMole();
-        //}, 3000); 
+        removeRoundDisplay();
+        displayRound(++round);
+
+        setTimeout(() => {
+          removeRoundDisplay(); // Remove the round number display
+          showRandomMole(); // Start the next round
+        }, 3000); 
+
+        //update_perams();
+        
+
       }
       
       
@@ -121,6 +144,8 @@ async function showRandomMole() {
         // The mole ID is stored in the data-mole-id attribute
         const moleID = event.currentTarget.dataset.moleID;
         console.log(`Mole ID: ${moleID} was clicked!`);
+        //console.log(`Round number: ${++round}.`);
+        //update_perams();
         resetGame();
         // TODO: add logic to update game here
         
@@ -137,20 +162,20 @@ async function showRandomMole() {
           holeElement.addEventListener('click', handleMoleClick);
       
           // Set a timeout to "hide" the mole after a specific duration
-          setTimeout(() => {
+          const timeoutId = setTimeout(() => {
             holes[holeIndex].style.backgroundColor = ''; // Reset color to hide mole
             // Explicitly remove the click event listener
             holeElement.removeEventListener('click', handleMoleClick);
             // Remove the data attribute
             holeElement.removeAttribute('data-mole-id');
-          }, durArray[i] * 3000); // Use the corresponding duration for each mole
+          }, durArray[i] * 1000); // Use the corresponding duration for each mole
         }
       }
     
 
     
     // Hide mole after a delay and repeat
-    setTimeout(showRandomMole, 1000);
+    setTimeout(showRandomMole, 2000);
 }
 // Initiate the game when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', showRandomMole);
