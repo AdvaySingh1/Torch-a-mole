@@ -5,6 +5,8 @@ function clearMoles() {
   holes.forEach(hole => hole.style.backgroundColor = '');
 }
 
+var round = 0;
+
 // Fetch mole data from the server
 async function getMolesData() {
     try {
@@ -42,7 +44,6 @@ async function showRandomMole() {
 
     // Set the background color of the hole to the mole's color
     let usedHoles = new Set();
-    let mole_1_hole, mole_2_hole, mole_3_hole;
 
     // Function to get a unique random hole that isn't used yet
     function getUniqueHole(probabilities) {
@@ -80,13 +81,21 @@ async function showRandomMole() {
     let durArray = [];
     let probsArray = []
     let i = 0;
-    moles.forEach((mole) => {
+    function update_perams(){
+      colorArray = [];
+      durArray = [];
+      probsArray = [];
+      moles.forEach((mole) => {
         // console.log(`Mole ID: ${mole.ID}, Data: ${mole.Data[1]}`);
         colorArray.push(mole.Data_mole.slice(1, 4)) // 2nd to 4th number represents values for the color.
         durArray.push(mole.Data_mole[0]);
         probsArray.push(mole.Data_mole.slice(4, mole.Data_mole.length));
 
     });
+    }
+    update_perams();
+
+    
 
     
     function resetGame() {
@@ -95,6 +104,12 @@ async function showRandomMole() {
           var newHole = hole.cloneNode(true);
           hole.parentNode.replaceChild(newHole, hole);
         });
+        console.log(`Round number: ${++round}.`);
+        update_perams();
+        //setTimeout(() => {
+          // Call the function to start the next round of the game
+         // showRandomMole();
+        //}, 3000); 
       }
       
       
@@ -108,6 +123,7 @@ async function showRandomMole() {
         console.log(`Mole ID: ${moleID} was clicked!`);
         resetGame();
         // TODO: add logic to update game here
+        
       }
     usedHoles.clear();
     for (let i = 0; i < 3; i++) {

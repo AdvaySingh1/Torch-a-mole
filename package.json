@@ -1,6 +1,19 @@
 {
+  "name": "torch-a-mole",
+  "version": "1.0.0",
+  "description": "Natural Selection moddeleed in an AI power Wack-A-Mole game. Difficulty is set by the user and modles learn to adapt to the user playstyle. Game can be played with any of two bach end systems:  - Torch API powered cnn.  - C++ objected oriented tensor class model.",
+  "main": "index.js",
+  "scripts": {
+    "devStart": "nodeman server/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodeman": "^1.1.2"
   }
 }
